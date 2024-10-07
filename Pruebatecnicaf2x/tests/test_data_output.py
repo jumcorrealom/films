@@ -15,11 +15,11 @@ class TestDataOutput(unittest.TestCase):
         cls.spark.stop()
     
     def test_films_parquet(self):
-        output_path = os.path.join("data", "processed_data", "Films", "Films.parquet")
+        output_path = os.path.join("data", "processed_data", "film", "film.parquet")
         self.assertTrue(os.path.exists(output_path), f"{output_path} does not exist")
         
         df = self.spark.read.parquet(output_path)
-        # Perform assertions on the DataFrame
+        # Perform assertions on the DataFrames
         self.assertGreater(df.count(), 0, "DataFrame is empty")
         self.assertIn('title', df.columns, "'title' column is missing")
         # Add more assertions as needed

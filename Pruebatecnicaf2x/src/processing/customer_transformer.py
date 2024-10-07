@@ -20,14 +20,12 @@ class CustomerTransformer(BaseTransformer):
             ' segment': 'segment'
         }
         df = self.rename_columns(df, columns_to_rename)
-        
-        # Clean Email
+    
         def clean_email(email):
-            # Remove whitespace
             email = re.sub(r'\s+', '', email or '')
-            # Define valid email regex
+            
             valid_email_regex = r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,3}$'
-            # Validate and clean email
+            
             if not re.match(valid_email_regex, email):
                 parts = email.split('@')
                 username = re.sub(r'[^a-zA-Z0-9._-]', '', parts[0]) if len(parts) > 0 else ''
@@ -38,9 +36,7 @@ class CustomerTransformer(BaseTransformer):
         clean_email_udf = udf(clean_email, StringType())
         df = df.withColumn('email', clean_email_udf(col('email')))
         
-        # Clean Names
         def clean_name(name, is_last_name=False):
-            # Clean and validate name
             name = (name or '').strip()
             name = re.sub(r'-', ' ', name)
             if is_last_name:

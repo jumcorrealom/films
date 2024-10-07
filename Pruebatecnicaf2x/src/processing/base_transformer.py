@@ -32,8 +32,19 @@ class BaseTransformer(ABC):
                 col(column).isin(null_values), None
             ).otherwise(col(column)))
         return df
+    
+    
+    def drop_duplicated(self, df: DataFrame) -> DataFrame:
+        df = df.dropDuplicates()
+
+        return df
+
+    
     def write_to_parquet(self, df: DataFrame, output_path: str):
         df.write.mode('overwrite').parquet(output_path)
+
+    
+
     @abstractmethod
     def transform(self, df: DataFrame) -> DataFrame:
         pass
